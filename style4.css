@@ -1,0 +1,27 @@
+body {
+    /* Bleu ciel / Clair */
+    background: linear-gradient(to right, #89f7fe, #66a6ff); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Verdana', sans-serif;
+}
+
+.clock-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Blanc semi-transparent */
+    padding: 30px 60px;
+    border-radius: 50px; /* Coins arrondis pour un effet doux */
+    /* Petite ombre douce */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+    backdrop-filter: blur(5px); /* Effet flou si le fond est complexe */
+}
+
+#clock {
+    font-size: 5.5rem;
+    color: #0056b3; /* Bleu marine profond */
+    letter-spacing: 4px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}

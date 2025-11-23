@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Horloge & Chronomètre à Thèmes</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .theme-button,
+      .control-button {
+        padding: 8px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+      .stopwatch-controls {
+        margin-top: 20px;
+      }
+      #stopwatch-display {
+        font-size: 2.5rem;
+        margin-top: 15px;
+        font-family: inherit; /* Hérite de la police du thème */
+      }
+      .start {
+        background-color: #4caf50;
+        color: white;
+      }
+      .pause {
+        background-color: #f44336;
+        color: white;
+      }
+      .reset {
+        background-color: #ff9800;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-selector">
+      <button
+        class="theme-button"
+        onclick="changeTheme('neon')"
+        style="background-color: #ff00ff; color: white"
+      >
+        NÉON
+      </button>
+      <button
+        class="theme-button"
+        onclick="changeTheme('nature')"
+        style="background-color: #4caf50; color: white"
+      >
+        NATURE
+      </button>
+      <button
+        class="theme-button"
+        onclick="changeTheme('summer')"
+        style="background-color: #66a6ff; color: white"
+      >
+        ÉTÉ
+      </button>
+    </div>
+
+    <div id="clock-container" class="clock-container">
+      <div id="clock"></div>
+
+      <div id="stopwatch-display">00:00:00.00</div>
+
+      <div class="stopwatch-controls">
+        <button
+          class="control-button start"
+          id="startPauseBtn"
+          onclick="startStopwatch()"
+        >
+          Démarrer
+        </button>
+        <button class="control-button reset" onclick="resetStopwatch()">
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+    <button
+      class="theme-button"
+      onclick="changeTheme('analog')"
+      style="background-color: #5c6b73; color: white"
+    >
+      ANALOGIQUE
+    </button>
+    <div class="analog-clock">
+      <div class="hand hour" id="hourHand"></div>
+      <div class="hand minute" id="minuteHand"></div>
+      <div class="hand second" id="secondHand"></div>
+      <div class="center-dot"></div>
+    </div>
+
+    <div id="clock"></div>
+
+    <script>
+      // --- Variables du Chronomètre ---
+      let stopwatchTime = 0; // Temps en millisecondes
+      let stopwatchInterval;
+      let isRunning = false;
+
+      // --- FONCTIONS HORLOGE (inchangées) ---
+      // La fonction updateClock() doit maintenant gérer les aiguilles ET l'affichage numérique
+      function updateClock() {
+        const now = new Date();
+
+        // --- 1. Gestion de l'affichage Numérique (inchangé) ---
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        const timeString = `${String(hours).padStart(2, "0")}:${String(
+          minutes
+        ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        document.getElementById("clock").textContent = timeString;
+
+        // --- 2. Gestion de l'affichage Analogique (NOUVEAU) ---
+
+        // Calcul des degrés pour chaque aiguille.
+        // On ajoute le mouvement continu (e.g., les minutes font bouger les heures)
+
+        // Seconde : 6 degrés par seconde
+        const secDeg = (seconds / 60) * 360;
+
+        // Minute : 6 degrés par minute + ajustement par les secondes (0.1 degré par seconde)
+        const minDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
+
+        // Heure : 30 degrés par heure + ajustement par les minutes (0.5 degré par minute)
+        const hrDeg = ((hours % 12) / 12) * 360 + (minutes / 60) * 30;
+
+        // Appliquer la rotation via CSS (transform: rotate())
+        document.getElementById(
+          "secondHand"
+        ).style.transform = `rotate(${secDeg}deg)`;
+        document.getElementById(
+          "minuteHand"
+        ).style.transform = `rotate(${minDeg}deg)`;
+        document.getElementById(
+          "hourHand"
+        ).style.transform = `rotate(${hrDeg}deg)`;
+      }
+
+      // --- FONCTIONS CHRONOMÈTRE (NOUVEAU) ---
+
+      function formatStopwatchTime(ms) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const cs = Math.floor((ms % 1000) / 10); // Centièmes de seconde
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+          2,
+          "0"
+        );
+        const seconds = String(totalSeconds % 60).padStart(2, "0");
+
+        return `${hours}:${minutes}:${seconds}.${String(cs).padStart(2, "0")}`;
+      }
+
+      function updateStopwatchDisplay() {
+        stopwatchTime += 10; // Incrémenter de 10ms
+        document.getElementById("stopwatch-display").textContent =
+          formatStopwatchTime(stopwatchTime);
+      }
+
+      function startStopwatch() {
+        if (!isRunning) {
+          isRunning = true;
+          // Démarre l'intervalle toutes les 10 millisecondes
+          stopwatchInterval = setInterval(updateStopwatchDisplay, 10);
+
+          const btn = document.getElementById("startPauseBtn");
+          btn.textContent = "Pause";
+          btn.className = "control-button pause";
+          btn.onclick = pauseStopwatch;
+        }
+      }
+
+      function pauseStopwatch() {
+        if (isRunning) {
+          isRunning = false;
+          clearInterval(stopwatchInterval);
+
+          const btn = document.getElementById("startPauseBtn");
+          btn.textContent = "Continuer";
+          btn.className = "control-button start";
+          btn.onclick = startStopwatch;
+        }
+      }
+
+      function resetStopwatch() {
+        pauseStopwatch(); // Arrête d'abord
+        stopwatchTime = 0;
+        document.getElementById("stopwatch-display").textContent =
+          "00:00:00.00";
+
+        // Remet le bouton en mode Démarrer
+        const btn = document.getElementById("startPauseBtn");
+        btn.textContent = "Démarrer";
+        btn.className = "control-button start";
+        btn.onclick = startStopwatch;
+      }
+
+      // --- FONCTION DE THÈME (Mise à jour pour inclure les boutons de contrôle) ---
+      function changeTheme(themeName) {
+        const container = document.getElementById("clock-container");
+        const body = document.body;
+
+        // Si l'utilisateur clique sur le bouton "Analogique", on applique le thème NÉON pour le style de base
+        // mais on garde "analog" pour la logique d'affichage.
+        const isAnalogMode = themeName === "analog";
+        const actualThemeName = isAnalogMode ? "neon" : themeName; // Utilise neon pour le style de base de l'analogique
+
+        // 1. Gérer l'affichage (Masquer/Afficher)
+        document.querySelector(".analog-clock").style.display = isAnalogMode
+          ? "block"
+          : "none";
+        document.getElementById("clock").style.display = isAnalogMode
+          ? "none"
+          : "block";
+        document.getElementById("stopwatch-display").style.display =
+          isAnalogMode ? "none" : "block";
+        document.querySelector(".stopwatch-controls").style.display =
+          isAnalogMode ? "none" : "block";
+
+        // 2. Gérer les classes de thème (pour le style)
+        container.classList.remove(
+          "neon-theme",
+          "nature-theme",
+          "summer-theme",
+          "analog-theme"
+        );
+        container.classList.add(`${actualThemeName}-theme`);
+
+        body.classList.remove("neon-bg", "nature-bg", "summer-bg");
+        body.classList.add(`${actualThemeName}-bg`);
+      }
+      // --- INITIALISATION ---
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        changeTheme("neon");
+      });
+    </script>
+  </body>
+</html>

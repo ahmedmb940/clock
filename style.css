@@ -1,0 +1,245 @@
+/* --- STYLE GÉNÉRIQUE (Applicable à tous les thèmes) --- */
+body {
+    /* Le fond du body changera avec les classes ci-dessous */
+    display: flex;
+    flex-direction: column; /* Pour placer les boutons au-dessus de l'horloge */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.5s ease; /* Transition douce pour le fond */
+}
+
+/* Style de base du conteneur (commun aux thèmes) */
+.clock-container {
+    padding: 30px 60px;
+    margin-top: 20px; /* Espace entre les boutons et l'horloge */
+    transition: all 0.5s ease; /* Transition pour les changements de style */
+}
+
+/* Style de l'heure (commun aux thèmes) */
+#clock {
+    font-size: 5rem;
+    letter-spacing: 5px;
+    transition: all 0.5s ease; 
+}
+
+
+/* --- THÈMES SPÉCIFIQUES --- */
+
+/* 1. NÉON (Cyberpunk) */
+.neon-bg {
+    background-color: #0d0d0d;
+}
+.neon-theme {
+    background: rgba(18, 18, 18, 0.7);
+    border-radius: 5px;
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+.neon-theme #clock {
+    font-family: 'Consolas', monospace;
+    color: #00ffff;
+    text-shadow: 
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        0 0 20px #ff00ff;
+}
+
+/* 2. NATURE (Bois et Vert) */
+.nature-bg {
+    background-color: #f0f0e8;
+}
+.nature-theme {
+    background: #a08050;
+    border-radius: 10px;
+    border: 5px solid #6b5235;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+.nature-theme #clock {
+    font-family: 'Georgia', serif;
+    font-size: 4rem;
+    color: #4CAF50;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* 3. ÉTÉ (Clair et Marin) */
+.summer-bg {
+    background: linear-gradient(to right, #89f7fe, #66a6ff);
+}
+.summer-theme {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+.summer-theme #clock {
+    font-family: 'Verdana', sans-serif;
+    font-size: 5.5rem;
+    color: #0056b3;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* ... (Le style générique est inchangé) ... */
+
+/* 1. NÉON (Cyberpunk) */
+.neon-theme #clock, .neon-theme #stopwatch-display { /* Ajout de #stopwatch-display */
+    font-family: 'Consolas', monospace;
+    color: #00ffff;
+    text-shadow: 
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        0 0 20px #ff00ff;
+}
+
+/* 2. NATURE (Bois et Vert) */
+.nature-theme #clock, .nature-theme #stopwatch-display { /* Ajout de #stopwatch-display */
+    font-family: 'Georgia', serif;
+    font-size: 4rem;
+    color: #4CAF50;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* 3. ÉTÉ (Clair et Marin) */
+.summer-theme #clock, .summer-theme #stopwatch-display { /* Ajout de #stopwatch-display */
+    font-family: 'Verdana', sans-serif;
+    font-size: 5.5rem;
+    color: #0056b3;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Vous pouvez ajuster la taille spécifique ici si besoin */
+.nature-theme #stopwatch-display {
+    font-size: 2rem; /* Plus petit pour mieux s'intégrer au thème nature */
+}
+/* --- STYLE GÉNÉRIQUE POUR L'HORLOGE ANALOGIQUE --- */
+
+.analog-clock {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 30px auto 0; 
+    /* Cache par défaut, affiché par JS */
+    display: none; 
+}
+
+/* Styles des Aiguilles (par défaut) */
+.hand {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform-origin: 100%; 
+    border-radius: 3px;
+    transition: all 0.05s cubic-bezier(0, 0, 0.5, 1);
+}
+.hour { width: 30%; height: 8px; }
+.minute { width: 40%; height: 6px; }
+.second { width: 45%; height: 2px; }
+.center-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+
+/* --- THÈMES APPLIQUÉS À L'ANALOGIQUE --- */
+
+/* 1. NÉON (Cyberpunk) Analogique */
+.neon-theme .analog-clock {
+    background: #0d0d0d; 
+    border: 3px solid #ff00ff;
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.7);
+}
+.neon-theme .hand { background: #00ffff; }
+.neon-theme .second { background: #ff00ff; }
+.neon-theme .center-dot { background: #ff00ff; }
+
+
+/* 2. NATURE (Bois et Vert) Analogique */
+.nature-theme .analog-clock {
+    background: #fdf5e6; /* Beige clair */
+    border: 10px solid #6b5235; /* Marron bois */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+.nature-theme .hand { background: #388e3c; } /* Vert foncé */
+.nature-theme .second { background: #f44336; } /* Rouge terre */
+.nature-theme .center-dot { background: #6b5235; }
+
+
+/* 3. ÉTÉ (Clair et Marin) Analogique */
+.summer-theme .analog-clock {
+    background: white;
+    border: 5px solid #66a6ff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.summer-theme .hand { background: #0056b3; } /* Bleu Marine */
+.summer-theme .second { background: #ff9800; } /* Orange soleil */
+.summer-theme .center-dot { background: #0056b3; }
+/* --- STYLE DE BASE POUR L'HORLOGE ANALOGIQUE (Celle qui manquait) --- */
+
+/* Style générique du conteneur d'horloge (cadran) */
+.analog-clock {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    /* Couleur du fond de l'horloge */
+    background: #f4f4f4; 
+    border: 15px solid #282828;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 30px auto 0; 
+    display: none; /* Caché par défaut */
+}
+
+/* Styles des Aiguilles (génériques) */
+.hand {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform-origin: 100%; 
+    border-radius: 3px;
+    transition: all 0.05s cubic-bezier(0, 0, 0.5, 1);
+}
+.hour { 
+    width: 30%; 
+    height: 8px; 
+    background: #333; /* Noir/Gris foncé */
+}
+.minute { 
+    width: 40%; 
+    height: 6px; 
+    background: #555; /* Gris */
+}
+.second { 
+    width: 45%; 
+    height: 2px;
+    background: #f44336; /* Rouge */
+}
+.center-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    background: #111;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+/* --- THÈME DÉDIÉ AU BOUTON ANALOGIQUE (si vous le gardez) --- */
+
+.analog-bg {
+    background-color: #5c6b73; /* Couleur de fond pour le mode analogique */
+}
+.analog-theme {
+    /* Le conteneur parent (clock-container) devient transparent */
+    background: none !important; 
+    box-shadow: none !important;
+}

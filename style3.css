@@ -1,0 +1,25 @@
+body {
+    background-color: #f0f0e8; /* Fond crème très clair */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Georgia', serif; /* Police classique */
+}
+
+.clock-container {
+    /* Texture ou couleur qui rappelle le bois */
+    background: #a08050; 
+    padding: 40px 80px;
+    border-radius: 10px;
+    border: 5px solid #6b5235; /* Bordure marron foncé */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#clock {
+    font-size: 4rem; /* Un peu moins grand */
+    color: #4CAF50; /* Vert forêt */
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8); /* Ombre légère */
+}
